@@ -3,7 +3,7 @@ Near-Earth-Object Lookup
 
 This tool will show you the near-earth-asteroids that are making a close pass today. The tool has the ability to show NEOs for any date or a date range, so let's build that out together, fren.
 
-#setup
+# setup
 1. clone
 2. cd app / npm install
 3. get a NASA API key [here](https://api.nasa.gov/index.html#apply-for-an-api-key)
