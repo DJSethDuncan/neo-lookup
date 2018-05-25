@@ -6,23 +6,52 @@ function displayNEOs (data) {
 	var NEOs = data.near_earth_objects;
 	var dateArray = [];
 
+	console.log(NEOs);
+
 	for (date in NEOs) {
 		dateArray.push(date);
 	}
 
 	dateArray.sort(date_sort_asc);
 
-	console.log(dateArray);
+	for (date in dateArray) {
 
-	for (date in NEOs) {
-		$('#neoTable').after('<tr id="' + date + '"><td style="padding-top:20px;"><b>' + date + '</b></td><td>Name</td><td>Hazard</td><td>Est. Diameter</td><td>Miss Distance</td></tr>');
+		var rowHeader = '';
+		rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
+		rowHeader += '<tr id="' + dateArray[date] + '">';
+		rowHeader += '<td style="height:1em;"><b>' + dateArray[date] + '</b></td>';
+		rowHeader += '<td><b>Name</b></td>';
+		rowHeader += '<td><b>Hazard</b></td>';
+		rowHeader += '<td><b>Est. Diameter</b></td>';
+		rowHeader += '<td><b>Miss Distance</b></td>';
+		rowHeader += '<td><b>Relative Velocity</b></td>';
+		rowHeader += '<td><b>Orbits</b></td>';
+		rowHeader += '</tr>';
 
-		for (neo in NEOs[date]) {
-			thisNEO = NEOs[date][neo];
-			hazard = (thisNEO.is_potentially_hazardous_asteroid) ? 'Yes' : 'No';
+		$('#neoTable tr:last-child').after(rowHeader);
+
+		for (neo in NEOs[dateArray[date]]) {
+
+			thisNEO = NEOs[dateArray[date]][neo];
+			hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red">Yes</span>' : '<span class="green">No</span>';
 			estDiameter = thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) + ' - ' + thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) + ' ft';
 			missDistance = addCommas(thisNEO.close_approach_data[0].miss_distance.miles) + ' mi';
-			$('#' + date).after('<tr><td></td><td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td><td>' + hazard + '</td><td>' + estDiameter + '</td><td>' + missDistance + '</td></tr>');
+			relativeVelocity = addCommas(parseInt(thisNEO.close_approach_data[0].relative_velocity.miles_per_hour).toFixed(0)) + ' mph';
+			orbits = thisNEO.close_approach_data[0].orbiting_body;
+
+			var row = '';
+
+			row += '<tr>';
+			row += '<td></td>';
+			row += '<td><a hrf="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
+			row += '<td>' + hazard + '</td>';
+			row += '<td>' + estDiameter + '</td>';
+			row += '<td>' + missDistance + '</td>';
+			row += '<td>' + relativeVelocity + '</td>';
+			row += '<td>' + orbits + '</td>';
+			row += '</tr>';
+
+			$('#' + dateArray[date]).after(row);
 		}
 
 	}
