@@ -6,8 +6,6 @@ function displayNEOs (data) {
 	var NEOs = data.near_earth_objects;
 	var dateArray = [];
 
-	console.log(NEOs);
-
 	for (date in NEOs) {
 		dateArray.push(date);
 	}
