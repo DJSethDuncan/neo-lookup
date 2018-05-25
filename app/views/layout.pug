@@ -8,7 +8,7 @@ html
 		script.
 			var date = new Date().toISOString().slice(0,10);
 			$.ajax({
-				url: "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + date + "&end_date=" + date + "&api_key=#{api}",
+				url: "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + date + "&api_key=#{api}",
 				success: function(result){
 					displayNEOs(result);
 				}

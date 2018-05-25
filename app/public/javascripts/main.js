@@ -1,12 +1,19 @@
 $(document).ready(function(){
 
-
-
 });
 
 function displayNEOs (data) {
 	var NEOs = data.near_earth_objects;
-	console.log(NEOs);
+	var dateArray = [];
+
+	for (date in NEOs) {
+		dateArray.push(date);
+	}
+
+	dateArray.sort(date_sort_asc);
+
+	console.log(dateArray);
+
 	for (date in NEOs) {
 		$('#neoTable').after('<tr id="' + date + '"><td style="padding-top:20px;"><b>' + date + '</b></td><td>Name</td><td>Hazard</td><td>Est. Diameter</td><td>Miss Distance</td></tr>');
 
@@ -19,8 +26,15 @@ function displayNEOs (data) {
 		}
 
 	}
+
 }
 
 function addCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+var date_sort_asc = function (date1, date2) {
+	if (date1 > date2) return 1;
+	if (date1 < date2) return -1;
+	return 0;
 }
