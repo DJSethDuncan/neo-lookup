@@ -5,9 +5,10 @@ This tool will show you the near-earth-asteroids that are making a close pass to
 
 # setup
 1. clone
-2. cd app / npm install
+2. `cd app` / `npm install`
 3. get a NASA API key [here](https://api.nasa.gov/index.html#apply-for-an-api-key)
-4. setup .env file to match the example .env.default format using the NASA API you acquired
+4. setup `.env` file to match the example `.env.default` format using the NASA API you acquired
+5. inside /app run `npm start`
 
 # data
 Data sourced from [this API](https://api.nasa.gov/api.html#NeoWS) from JPLs database
