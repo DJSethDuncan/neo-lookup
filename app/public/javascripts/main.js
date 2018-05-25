@@ -41,7 +41,7 @@ function displayNEOs (data) {
 
 			row += '<tr>';
 			row += '<td></td>';
-			row += '<td><a hrf="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
+			row += '<td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
 			row += '<td>' + hazard + '</td>';
 			row += '<td>' + estDiameter + '</td>';
 			row += '<td>' + missDistance + '</td>';
