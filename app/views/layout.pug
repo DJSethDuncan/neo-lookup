@@ -1,0 +1,18 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+		script(src='/javascripts/main.js')
+		script.
+			$.ajax({
+				url: "https://api.nasa.gov/neo/rest/v1/feed?api_key=#{api}",
+				success: function(result){
+					console.log(result);
+				}
+			});
+	body
+		block content
+			
+			doctype html
