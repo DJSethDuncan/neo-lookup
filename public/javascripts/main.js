@@ -3,6 +3,9 @@ $(document).ready(function(){
 });
 
 function displayNEOs (data) {
+
+	$('#loading').hide();
+
 	var NEOs = data.near_earth_objects;
 	var dateArray = [];
 
@@ -30,12 +33,24 @@ function displayNEOs (data) {
 
 		for (neo in NEOs[dateArray[date]]) {
 
-			thisNEO = NEOs[dateArray[date]][neo];
-			hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red">Yes</span>' : '<span class="green">No</span>';
-			estDiameter = thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) + ' - ' + thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) + ' ft';
-			missDistance = addCommas(thisNEO.close_approach_data[0].miss_distance.miles) + ' mi';
-			relativeVelocity = addCommas(parseInt(thisNEO.close_approach_data[0].relative_velocity.miles_per_hour).toFixed(0)) + ' mph';
-			orbits = thisNEO.close_approach_data[0].orbiting_body;
+			var thisNEO = NEOs[dateArray[date]][neo];
+
+			var missDistanceColor = '';
+			var missDistanceNumber = Math.round(thisNEO.close_approach_data[0].miss_distance.miles);
+
+			if (missDistanceNumber <= 250000) {
+				missDistanceClass = 'red';
+			} else if (missDistanceNumber <= 1000000) {
+				missDistanceClass = 'yellow';
+			} else {
+				missDistanceClass = 'green';
+			}
+
+			var missDistanceText = '<span class="' + missDistanceClass + '">' + addCommas(missDistanceNumber) + ' mi</span>';
+			var hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red">Yes</span>' : '<span class="green">No</span>';
+			var estDiameter = thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) + ' - ' + thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) + ' ft';
+			var relativeVelocity = addCommas(parseInt(thisNEO.close_approach_data[0].relative_velocity.miles_per_hour).toFixed(0)) + ' mph';
+			var orbits = thisNEO.close_approach_data[0].orbiting_body;
 
 			var row = '';
 
@@ -44,7 +59,7 @@ function displayNEOs (data) {
 			row += '<td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
 			row += '<td>' + hazard + '</td>';
 			row += '<td>' + estDiameter + '</td>';
-			row += '<td>' + missDistance + '</td>';
+			row += '<td>' + missDistanceText + '</td>';
 			row += '<td>' + relativeVelocity + '</td>';
 			row += '<td>' + orbits + '</td>';
 			row += '</tr>';

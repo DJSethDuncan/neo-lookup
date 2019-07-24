@@ -3,6 +3,8 @@ extends layout
 block content
 	h1= title
 	p This is a list of objects (primarily asteroids), ordered by day, that will make near-Earth passes inside the next week.
+	div(id='loading')
+		h1(style='text-align:center;') Loading
 	table(id='neoTable')
 		tr(id='topRow')
 			td(colspan='10')
