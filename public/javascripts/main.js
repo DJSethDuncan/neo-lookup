@@ -2,6 +2,11 @@ $(document).ready(function(){
 
 });
 
+function displayError (error) {
+	console.error('error');
+	console.error(error);
+}
+
 function displayNEOs (data) {
 
 	$('#loading').hide();

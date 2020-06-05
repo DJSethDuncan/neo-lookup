@@ -11,6 +11,9 @@ html
 				url: "https://api.nasa.gov/neo/rest/v1/feed?start_date=" + date + "&api_key=#{api}",
 				success: function(result){
 					displayNEOs(result);
+				},
+				fail: function(error){
+					displayError(error);
 				}
 			});
 	body
