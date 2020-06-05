@@ -5,7 +5,7 @@ This tool will show you the near-earth-asteroids that are making a close pass on
 
 This is an Express application using jQuery to get the data.
 
-[Live Example][https://neo-lookup.sethduncan.com]
+[Live Example](https://neo-lookup.sethduncan.com)
 
 # setup
 1. clone
