@@ -1,6 +1,8 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #333;
+  color: #CCC;
 }
 
 a {
@@ -21,4 +23,20 @@ td {
 
 .yellow {
 	color:#CCCC00;
+}
+
+.container {
+	width: 80%;
+	margin: 0 auto;
+	min-width: 300px;
+}
+
+.buttonContainer {
+	padding-top: 25px;
+	text-align: center;
+}
+
+.buttonContainer button {
+	padding: 4px 10px;
+	margin: 0 25px;
 }

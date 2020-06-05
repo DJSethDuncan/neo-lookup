@@ -1,5 +1,15 @@
 $(document).ready(function(){
 
+	$('.buttonHazardOnly').click(function() {
+		$('.noHazard').parents('.neoRow').toggle();
+		// make button active
+	});
+
+	$('.buttonNearOnly').click(function() {
+		$('.midMiss, .farMiss').parents('.neoRow').toggle();
+		// make button active
+	});
+
 });
 
 function displayError (error) {
@@ -23,16 +33,27 @@ function displayNEOs (data) {
 	for (date in dateArray) {
 
 		var rowHeader = '';
-		rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
-		rowHeader += '<tr id="' + dateArray[date] + '">';
-		rowHeader += '<td style="height:1em;"><b>' + dateArray[date] + '</b></td>';
-		rowHeader += '<td><b>Name</b></td>';
-		rowHeader += '<td><b>Hazard</b></td>';
-		rowHeader += '<td><b>Est. Diameter</b></td>';
-		rowHeader += '<td><b>Miss Distance</b></td>';
-		rowHeader += '<td><b>Relative Velocity</b></td>';
-		rowHeader += '<td><b>Orbits</b></td>';
-		rowHeader += '</tr>';
+
+		console.log(date);
+
+		if (date == 0) {
+			rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
+			rowHeader += '<tr id="' + dateArray[date] + '">';
+			rowHeader += '<td style="height:1em;"><b>' + dateArray[date] + '</b></td>';
+			rowHeader += '<td><b>Name</b></td>';
+			rowHeader += '<td><b>Hazard</b></td>';
+			rowHeader += '<td><b>Est. Diameter</b></td>';
+			rowHeader += '<td><b>Miss Distance</b></td>';
+			rowHeader += '<td><b>Relative Velocity</b></td>';
+			rowHeader += '<td><b>Orbits</b></td>';
+			rowHeader += '</tr>';
+		} else {
+			rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
+			rowHeader += '<tr id="' + dateArray[date] + '">';
+			rowHeader += '<td style="height:1em;"><b>' + dateArray[date] + '</b></td>';
+			rowHeader += '<td colspan="100"></td>';
+			rowHeader += '</tr>';
+		}
 
 		$('#neoTable tr:last-child').after(rowHeader);
 
@@ -44,22 +65,22 @@ function displayNEOs (data) {
 			var missDistanceNumber = Math.round(thisNEO.close_approach_data[0].miss_distance.miles);
 
 			if (missDistanceNumber <= 250000) {
-				missDistanceClass = 'red';
+				missDistanceClass = 'red nearMiss';
 			} else if (missDistanceNumber <= 1000000) {
-				missDistanceClass = 'yellow';
+				missDistanceClass = 'yellow midMiss';
 			} else {
-				missDistanceClass = 'green';
+				missDistanceClass = 'green farMiss';
 			}
 
 			var missDistanceText = '<span class="' + missDistanceClass + '">' + addCommas(missDistanceNumber) + ' mi</span>';
-			var hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red">Yes</span>' : '<span class="green">No</span>';
+			var hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red hazard">Yes</span>' : '<span class="green noHazard">No</span>';
 			var estDiameter = thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) + ' - ' + thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) + ' ft';
 			var relativeVelocity = addCommas(parseInt(thisNEO.close_approach_data[0].relative_velocity.miles_per_hour).toFixed(0)) + ' mph';
 			var orbits = thisNEO.close_approach_data[0].orbiting_body;
 
 			var row = '';
 
-			row += '<tr>';
+			row += '<tr class="neoRow">';
 			row += '<td></td>';
 			row += '<td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
 			row += '<td>' + hazard + '</td>';
