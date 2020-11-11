@@ -1,8 +1,13 @@
-version: 2.1
+jobs:
+  start:
+    steps:
+      - checkout
+      - node/install
+      - run: npm start
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@4.1.0
+version: 2.1
 workflows:
-  node-tests:
+  test_my_app:
     jobs:
-       - node/test
-       - run: npm run test
+      - start
