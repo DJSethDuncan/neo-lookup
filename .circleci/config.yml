@@ -17,6 +17,3 @@ workflows:
   test_my_app:
     jobs:
       - test
-  test_my_app_again:
-    jobs:
-      - test
