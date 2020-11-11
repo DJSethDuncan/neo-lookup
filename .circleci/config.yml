@@ -1,16 +1,29 @@
 jobs:
   test:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: '13.14'
     steps:
       - checkout
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
       - run: npm run test
+  notify:
+    executor:
+      name: node/default
+      tag: '13.14'
+    steps:
+      - run: npm run wookiee
 orbs:
   node: circleci/node@4.1.0
+  slack: circleci/slack@4.1.1
 version: 2.1
 workflows:
   test_my_app:
     jobs:
       - test
+  test_my_app_again:
+    jobs:
+      - test
+      - notify
