@@ -40,3 +40,55 @@ td {
 	padding: 4px 10px;
 	margin: 0 25px;
 }
+
+.spaceMap {
+	position:relative;
+	clear:both;
+	height:50px;
+	max-width:100%;
+}
+
+.earth {
+	position:absolute;
+	float:left;
+	margin-top:2px;
+	margin-left:0;
+	width:10px;
+	height:10px;
+	background:blue;
+	border-radius:10px/10px;
+	cursor: pointer;
+}
+
+.moon {
+	position:absolute;
+	float:left;
+	margin-top:5px;
+	width:5px;
+	height:5px;
+	background:white;
+	border-radius:5px/5px;
+	cursor: pointer;
+}
+
+.NEOIcon {
+	width:2px;
+	height:2px;
+	margin:0 auto;
+	margin-top:7px;
+	background:white;
+	border-radius:2px/2px;
+}
+
+.NEOIconContainer {
+	position:absolute;
+	float:left;
+	cursor: pointer;
+	text-align:center;
+	height:15px; 
+	width:15px;
+}
+
+.highlightNEO {
+	background-color: #3d6875;
+}
