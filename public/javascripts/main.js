@@ -10,10 +10,18 @@ $(document).ready(function(){
 		// make button active
 	});
 
+	$(document).on('mouseenter','#neoTable .NEOIconContainer', function(){
+		var targetID = $(this).data('neo-id')
+		$('.neoRow').removeClass('highlightNEO')
+		$('#neoTable #' + targetID).addClass('highlightNEO')
+	})
+
+	$(document).on('mouseleave','#neoTable .NEOIconContainer', function(){
+		$('.neoRow').removeClass('highlightNEO')
+	})
 });
 
 function displayError (error) {
-	console.error('error');
 	console.error(error);
 }
 
@@ -33,8 +41,6 @@ function displayNEOs (data) {
 	for (date in dateArray) {
 
 		var rowHeader = '';
-
-		console.log(date);
 
 		if (date == 0) {
 			rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
@@ -56,6 +62,8 @@ function displayNEOs (data) {
 		}
 
 		$('#neoTable tr:last-child').after(rowHeader);
+
+		distanceChartHTML = getDistanceChartHTML(NEOs[dateArray[date]])
 
 		for (neo in NEOs[dateArray[date]]) {
 
@@ -80,7 +88,7 @@ function displayNEOs (data) {
 
 			var row = '';
 
-			row += '<tr class="neoRow">';
+			row += '<tr class="neoRow" id="' + thisNEO.id + '">';
 			row += '<td></td>';
 			row += '<td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
 			row += '<td>' + hazard + '</td>';
@@ -93,7 +101,46 @@ function displayNEOs (data) {
 			$('#' + dateArray[date]).after(row);
 		}
 
+		distanceChartRow = '<tr><td colspan=99>' + distanceChartHTML + '</td></tr>'
+		$('#' + dateArray[date]).after(distanceChartRow)
+
 	}
+
+}
+
+function getDistanceChartHTML (NEOs) {
+	
+	earth = '<div class="earth"> </div>'
+	NEOIcon = '<div class="NEOIcon"> </div>'
+	 
+	NEOsDistanceArray = []
+	NEODetailArray = []
+	NEOs.forEach(NEO => NEOsDistanceArray.push(Math.round(NEO.close_approach_data[0].miss_distance.miles)))
+
+	maxDistance = Math.max(...NEOsDistanceArray)
+
+	NEOs.forEach(function(NEO) {
+		NEOObject = {
+			id: NEO.id,
+			missPercent: Math.round((NEO.close_approach_data[0].miss_distance.miles/maxDistance) * 100)
+		}
+		NEODetailArray.push(NEOObject)
+	})
+
+	moonPercent = Math.round((238900/maxDistance) * 100)
+	moon = '<div class="moon" style="margin-left:' + moonPercent + '%;"> </div>'
+
+	html = '<div class="spaceMap">'
+	html += earth
+	html += moon
+
+	NEODetailArray.forEach(function (NEODetail) {
+		html += '<div class="NEOIconContainer" data-neo-id="' + NEODetail.id + '" style="margin-left:' + NEODetail.missPercent + '%;">' + NEOIcon + '</div>'
+	})
+
+	html += '</div>'
+
+	return html
 
 }
 
