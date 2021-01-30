@@ -9,6 +9,10 @@ a {
   color: #00B7FF;
 }
 
+#neoTable {
+	width: 90%;
+}
+
 td {
 	padding:5px 15px;
 }
@@ -41,11 +45,20 @@ td {
 	margin: 0 25px;
 }
 
+.spaceMapContainer td {
+	padding: 0 !important;
+}
+
 .spaceMap {
 	position:relative;
+	padding: 5px 0 0 1%;
 	clear:both;
-	height:50px;
+	border:1px solid #777;
+	border-radius: 25px;
+	background-color:#555;
 	max-width:100%;
+	height:20px;
+	margin-bottom:15px;
 }
 
 .earth {
@@ -91,4 +104,22 @@ td {
 
 .highlightNEO {
 	background-color: #3d6875;
+}
+
+@media only screen and (max-width: 1280px) {
+	
+	body {
+		padding: 0px;
+	}
+
+	#neoTable {
+		width: 100%;
+	}
+
+	.container {
+		width: 100%;
+		margin: 0 auto;
+		min-width: 300px;
+	}
+
 }
