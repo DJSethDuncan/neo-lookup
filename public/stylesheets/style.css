@@ -68,7 +68,7 @@ td {
 	margin-left:0;
 	width:10px;
 	height:10px;
-	background:blue;
+	background:#00B7FF;
 	border-radius:10px/10px;
 	cursor: pointer;
 }
@@ -77,9 +77,9 @@ td {
 	position:absolute;
 	float:left;
 	margin-top:5px;
-	width:5px;
-	height:5px;
-	background:white;
+	width:4px;
+	height:4px;
+	background:#CCC;
 	border-radius:5px/5px;
 	cursor: pointer;
 }
@@ -89,7 +89,7 @@ td {
 	height:2px;
 	margin:0 auto;
 	margin-top:7px;
-	background:white;
+	background:#FFF;
 	border-radius:2px/2px;
 }
 
@@ -103,7 +103,7 @@ td {
 }
 
 .highlightNEO {
-	background-color: #3d6875;
+	background-color: #1f5172;
 }
 
 @media only screen and (max-width: 1280px) {
