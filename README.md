@@ -1,10 +1,10 @@
+![screenshot](https://user-images.githubusercontent.com/4060878/217894252-79ceac45-08ba-4366-9164-8fee0962f552.png)
+
 # neo-lookup
 
 Near-Earth-Object Lookup
 
 This tool will show you the near-earth-asteroids that are making a close pass on each day for the coming week. The tool has the ability to show NEOs for any date or a date range, so let's build that out together, fren.
-
-This is an Express application using jQuery to get the data.
 
 # setup
 
