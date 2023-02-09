@@ -6,6 +6,8 @@ Near-Earth-Object Lookup
 
 This tool will show you the near-earth-asteroids that are making a close pass on each day for the coming week. The tool has the ability to show NEOs for any date or a date range, so let's build that out together, fren.
 
+[Live Demo](https://neo-lookup.herokuapp.com/)
+
 # setup
 
 1. clone
