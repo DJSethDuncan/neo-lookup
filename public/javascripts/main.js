@@ -1,143 +1,168 @@
-$(document).ready(function(){
+// prep jquery
+$(document).ready(function () {
+  $(".buttonHazardOnly").click(function () {
+    $(".noHazard").parents(".neoRow").toggle();
+    // make button active
+  });
 
-	$('.buttonHazardOnly').click(function() {
-		$('.noHazard').parents('.neoRow').toggle();
-		// make button active
-	});
+  $(".buttonNearOnly").click(function () {
+    $(".midMiss, .farMiss").parents(".neoRow").toggle();
+    // make button active
+  });
 
-	$('.buttonNearOnly').click(function() {
-		$('.midMiss, .farMiss').parents('.neoRow').toggle();
-		// make button active
-	});
+  $(document).on("mouseenter", "#neoTable .NEOIconContainer", function () {
+    var targetID = $(this).data("neo-id");
+    $(".neoRow").removeClass("highlightNEO");
+    $("#neoTable #" + targetID).addClass("highlightNEO");
+  });
 
-	$(document).on('mouseenter','#neoTable .NEOIconContainer', function(){
-		var targetID = $(this).data('neo-id')
-		$('.neoRow').removeClass('highlightNEO')
-		$('#neoTable #' + targetID).addClass('highlightNEO')
-	})
+  $(document).on("mouseleave", "#neoTable .NEOIconContainer", function () {
+    $(".neoRow").removeClass("highlightNEO");
+  });
 
-	$(document).on('mouseleave','#neoTable .NEOIconContainer', function(){
-		$('.neoRow').removeClass('highlightNEO')
-	})
+  displayNEOs(dataJSON);
 });
 
-function displayNEOs (data) {
+// the parent function for transforming the data json into visual elements
+const displayNEOs = (data) => {
+  $("#loading").hide();
 
-	$('#loading').hide();
+  var NEOs = data.near_earth_objects;
+  var dateArray = [];
 
-	var NEOs = data.near_earth_objects;
-	var dateArray = [];
+  for (date in NEOs) {
+    dateArray.push(date);
+  }
 
-	for (date in NEOs) {
-		dateArray.push(date);
-	}
+  dateArray.sort(date_sort_asc);
 
-	dateArray.sort(date_sort_asc);
+  for (date in dateArray) {
+    const rowHeader = `
+			<tr><td style="height:30px;">&nbsp;</td></tr>
+			<tr><td colspan="99" style="text-align:center;"><h1>${dateArray[date]}</h1></td></tr>
+			<tr id="${dateArray[date]}">
+				<td><b>Name</b></td>
+				<td><b>Hazard</b></td>
+				<td><b>Est. Diameter</b></td>
+				<td><b>Miss Distance</b></td>
+				<td><b>Relative Velocity</b></td>
+			</tr>";
+		`;
 
-	for (date in dateArray) {
+    $("#neoTable tr:last-child").after(rowHeader);
 
-		var rowHeader = '';
+    const distanceChartHTML = getDistanceChartHTML(NEOs[dateArray[date]]);
 
-		rowHeader += '<tr><td style="height:30px;">&nbsp;</td></tr>';
-		rowHeader += '<tr><td colspan="99" style="text-align:center;"><h1>' + dateArray[date] + '</h1></td></tr>'
-		rowHeader += '<tr id="' + dateArray[date] + '">';
-			rowHeader += '<td><b>Name</b></td>';
-			rowHeader += '<td><b>Hazard</b></td>';
-			rowHeader += '<td><b>Est. Diameter</b></td>';
-			rowHeader += '<td><b>Miss Distance</b></td>';
-			rowHeader += '<td><b>Relative Velocity</b></td>';
-		rowHeader += '</tr>';
+    for (neo in NEOs[dateArray[date]]) {
+      const thisNEO = NEOs[dateArray[date]][neo];
+      const missDistanceNumber = Math.round(
+        thisNEO.close_approach_data[0].miss_distance.miles
+      );
+      let missDistanceClass = "green farMiss";
 
-		$('#neoTable tr:last-child').after(rowHeader);
+      if (missDistanceNumber <= 250000) {
+        missDistanceClass = "red nearMiss";
+      } else if (missDistanceNumber <= 2500000) {
+        missDistanceClass = "yellow midMiss";
+      }
 
-		var distanceChartHTML = getDistanceChartHTML(NEOs[dateArray[date]])
+      const missDistanceText = `<span class="${missDistanceClass}">${addCommas(
+        missDistanceNumber
+      )} mi</span>`;
 
-		for (neo in NEOs[dateArray[date]]) {
+      const hazard = thisNEO.is_potentially_hazardous_asteroid
+        ? '<span class="red hazard">Yes</span>'
+        : '<span class="green noHazard">No</span>';
 
-			var thisNEO = NEOs[dateArray[date]][neo];
-			var missDistanceNumber = Math.round(thisNEO.close_approach_data[0].miss_distance.miles);
-			var missDistanceClass = 'green farMiss'
+      const estDiameter =
+        thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) +
+        " - " +
+        thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) +
+        " ft";
 
-			if (missDistanceNumber <= 250000) {
-				missDistanceClass = 'red nearMiss';
-			} else if (missDistanceNumber <= 2500000) {
-				missDistanceClass = 'yellow midMiss';
-			}
+      const relativeVelocity =
+        addCommas(
+          parseInt(
+            thisNEO.close_approach_data[0].relative_velocity.miles_per_hour
+          ).toFixed(0)
+        ) + " mph";
 
-			var missDistanceText = '<span class="' + missDistanceClass + '">' + addCommas(missDistanceNumber) + ' mi</span>';
-			var hazard = (thisNEO.is_potentially_hazardous_asteroid) ? '<span class="red hazard">Yes</span>' : '<span class="green noHazard">No</span>';
-			var estDiameter = thisNEO.estimated_diameter.feet.estimated_diameter_min.toFixed(1) + ' - ' + thisNEO.estimated_diameter.feet.estimated_diameter_max.toFixed(1) + ' ft';
-			var relativeVelocity = addCommas(parseInt(thisNEO.close_approach_data[0].relative_velocity.miles_per_hour).toFixed(0)) + ' mph';
+      const row = `
+				<tr class="neoRow" id="${thisNEO.id}">
+					<td><a href="${thisNEO.nasa_jpl_url}" target="_new">${thisNEO.name}</a></td>
+					<td>${hazard}</td>
+					<td>${estDiameter}</td>
+					<td>${missDistanceText}</td>
+					<td>${relativeVelocity}</td>
+				</tr>`;
 
-			var row = '';
+      $("#" + dateArray[date]).after(row);
+    }
 
-			row += '<tr class="neoRow" id="' + thisNEO.id + '">';
-			row += '<td><a href="' + thisNEO.nasa_jpl_url + '" target="_new">' + thisNEO.name + '</a></td>';
-			row += '<td>' + hazard + '</td>';
-			row += '<td>' + estDiameter + '</td>';
-			row += '<td>' + missDistanceText + '</td>';
-			row += '<td>' + relativeVelocity + '</td>';
-			row += '</tr>';
+    var distanceChartRow = `<tr class="spaceMapContainer"><td colspan="99">${distanceChartHTML}</td></tr>`;
+    $("#" + dateArray[date]).before(distanceChartRow);
+  }
+};
 
-			$('#' + dateArray[date]).after(row);
-		}
+// helper functions
+const getDistanceChartHTML = (NEOs) => {
+  var moonDistance = 238900,
+    earth = '<div class="earth"> </div>',
+    NEOIcon = '<div class="NEOIcon"> </div>',
+    NEOsDistanceArray = [],
+    NEODetailArray = [];
 
-		var distanceChartRow = '<tr class="spaceMapContainer"><td colspan="99">' + distanceChartHTML + '</td></tr>'
-		$('#' + dateArray[date]).before(distanceChartRow)
+  NEOs.forEach((NEO) =>
+    NEOsDistanceArray.push(
+      Math.round(NEO.close_approach_data[0].miss_distance.miles)
+    )
+  );
+  maxDistance = Math.max(...NEOsDistanceArray);
 
-	}
+  if (maxDistance < moonDistance) {
+    maxDistance = moonDistance;
+  }
 
-}
+  NEOs.forEach(function (NEO) {
+    NEOObject = {
+      id: NEO.id,
+      missPercent: Math.round(
+        (NEO.close_approach_data[0].miss_distance.miles / maxDistance) * 100
+      ),
+    };
+    NEOObject.missPercent = rescaleView(NEOObject.missPercent);
+    NEODetailArray.push(NEOObject);
+  });
 
-function getDistanceChartHTML (NEOs) {
-	
-	var moonDistance = 238900,
-	earth = '<div class="earth"> </div>',
-	NEOIcon = '<div class="NEOIcon"> </div>',
-	NEOsDistanceArray = [],
-	NEODetailArray = []
+  moonPercent = rescaleView(Math.round((moonDistance / maxDistance) * 100));
 
-	NEOs.forEach(NEO => NEOsDistanceArray.push(Math.round(NEO.close_approach_data[0].miss_distance.miles)))
-	maxDistance = Math.max(...NEOsDistanceArray)
-	
-	if (maxDistance < moonDistance) { maxDistance = moonDistance }
-	
-	NEOs.forEach(function(NEO) {
-		NEOObject = {
-			id: NEO.id,
-			missPercent: Math.round((NEO.close_approach_data[0].miss_distance.miles/maxDistance) * 100)
-		}
-		NEOObject.missPercent = rescaleView(NEOObject.missPercent)
-		NEODetailArray.push(NEOObject)
-	})
-	
-	moonPercent = rescaleView(Math.round((moonDistance/maxDistance) * 100))
-	
-	var moon = '<div class="moon" style="margin-left:' + moonPercent + '%;"> </div>'
-	var html = '<div class="spaceMap">'
-	html += earth
-	html += moon
-	
-	NEODetailArray.forEach(function (NEODetail) {
-		html += '<div class="NEOIconContainer" data-neo-id="' + NEODetail.id + '" style="margin-left:' + NEODetail.missPercent + '%;">' + NEOIcon + '</div>'
-	})
-	
-	html += '</div>'
-	
-	return html
-}
+  var NEOsHTML = "";
 
-function rescaleView(originalPercent) {
-	var scale = .95
-	return originalPercent * scale
-}
+  NEODetailArray.forEach(function (NEODetail) {
+    NEOsHTML += `<div class="NEOIconContainer" data-neo-id="${NEODetail.id}" style="margin-left:${NEODetail.missPercent}%;">${NEOIcon}</div>`;
+  });
 
-function addCommas(x) {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+  var moon = `<div class="moon" style="margin-left:${moonPercent}%;"> </div>`;
+  return `<div class="spaceMap">${earth}${moon}${NEOsHTML}</div>`;
+};
 
-var date_sort_asc = function (date1, date2) {
-	if (date1 > date2) return 1;
-	if (date1 < date2) return -1;
-	return 0;
-}
+const rescaleView = (originalPercent) => {
+  var scale = 0.95;
+  return originalPercent * scale;
+};
+
+const addCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+const date_sort_asc = (date1, date2) => {
+  if (date1 > date2) return 1;
+  if (date1 < date2) return -1;
+  return 0;
+};
+
+const cleanAndParseData = (data) => {
+  // pug does weird things so we need to clean it
+  const cleanData = data.replaceAll("&quot;", '"');
+  return JSON.parse(cleanData);
+};

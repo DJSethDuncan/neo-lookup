@@ -3,20 +3,19 @@ extends layout
 block content
 	div(class='container')
 		h1= title
-		if api
-			div(class='resultsContainer')
-				p This is a list of objects (primarily asteroids), ordered by day, that will make near-Earth passes inside the next week.<br />
-					|The map shows relative distance of the asteroid (white dot) passes compared to the Earth and the Moon (Blue and Grey dots).<br />
-					|The data on this page is retrieved from the <a href='https://api.nasa.gov/api.html#NeoWS'>NASA NeoWs API</a>
-				p Notes:
-				p
-					i The average distance between the Earth and Moon is ~238,900 miles.<br />
-						|You can hover over the asteroids in the map to highlight their data
-				//- div(class='buttonContainer')
-				//- 	button(class='buttonHazardOnly') Show Only Hazardous
-				//- 	button(class='buttonNearOnly') Show Only Near-Misses
-				div(id='loading')
-					h1(style='text-align:center;') Loading
-				table(id='neoTable')
-					tr(id='topRow')
-						td(colspan='10')
+		div(class='resultsContainer')
+			p This is a list of objects (primarily asteroids), ordered by day, that will make near-Earth passes inside the next week.<br />
+				|The map shows relative distance of the asteroid (white dot) passes compared to the Earth and the Moon (Blue and Grey dots).<br />
+				|The data on this page is retrieved from the <a href='https://api.nasa.gov/api.html#NeoWS'>NASA NeoWs API</a>
+			p Notes:
+			p
+				i The average distance between the Earth and Moon is ~238,900 miles.<br />
+					|You can hover over the asteroids in the map to highlight their data
+			//- div(class='buttonContainer')
+			//- 	button(class='buttonHazardOnly') Show Only Hazardous
+			//- 	button(class='buttonNearOnly') Show Only Near-Misses
+			div(id='loading')
+				h1(style='text-align:center;') Loading
+			table(id='neoTable')
+				tr(id='topRow')
+					td(colspan='10')
