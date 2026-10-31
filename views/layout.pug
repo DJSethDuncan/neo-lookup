@@ -1,13 +1,29 @@
 doctype html
-html
-	head
-		title= title
-		link(rel='stylesheet', href='/stylesheets/style.css')
-		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
-		script(src='/javascripts/main.js')
-		script.
-			const dataJSON = cleanAndParseData("#{data}")
-	body
-		block content
-			
-			doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='theme-color', content='#080d17')
+    title= title
+    link(rel='preconnect', href='https://fonts.googleapis.com')
+    link(rel='preconnect', href='https://fonts.gstatic.com', crossorigin)
+    link(href='https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/javascripts/main.js' defer)
+    if development
+      script.
+        (() => {
+          let serverId;
+          const check = async () => {
+            try {
+              const response = await fetch('/__dev_reload', { cache: 'no-store' });
+              const data = await response.json();
+              if (serverId && serverId !== data.id) location.reload();
+              serverId = data.id;
+            } catch (_) {}
+            setTimeout(check, 1000);
+          };
+          check();
+        })();
+  body
+    block content

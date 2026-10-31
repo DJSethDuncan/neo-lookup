@@ -1,21 +1,62 @@
 extends layout
 
 block content
-	div(class='container')
-		h1= title
-		div(class='resultsContainer')
-			p This is a list of objects (primarily asteroids), ordered by day, that will make near-Earth passes inside the next week.<br />
-				|The map shows relative distance of the asteroid (white dot) passes compared to the Earth and the Moon (Blue and Grey dots).<br />
-				|The data on this page is retrieved from the <a href='https://api.nasa.gov/api.html#NeoWS'>NASA NeoWs API</a>
-			p Notes:
-			p
-				i The average distance between the Earth and Moon is ~238,900 miles.<br />
-					|You can hover over the asteroids in the map to highlight their data
-			//- div(class='buttonContainer')
-			//- 	button(class='buttonHazardOnly') Show Only Hazardous
-			//- 	button(class='buttonNearOnly') Show Only Near-Misses
-			div(id='loading')
-				h1(style='text-align:center;') Loading
-			table(id='neoTable')
-				tr(id='topRow')
-					td(colspan='10')
+  main.shell
+    header.topbar
+      a.brand(href='/' aria-label='NEO Watch home')
+        span.brand-mark ◉
+        span NEO<span class='brand-light'>/WATCH</span>
+      div.live-status
+        span.status-dot
+        span DEEP SPACE NETWORK
+        span.status-divider
+        span TIME&nbsp; <time id='clock'>--:--:--</time>
+    section.hero
+      div.hero-copy
+        p.eyebrow PLANETARY DEFENSE // LIVE TRACKING
+        h1 Close approaches.<br><span>In your orbit.</span>
+        p.hero-description A field guide to near-Earth objects passing through our cosmic neighborhood.
+      div.hero-art(aria-hidden='true')
+        div.orbit orbit
+        div.orbit.orbit-two
+        div.planet
+        div.asteroid
+        span.art-label EARTH / SOL SYSTEM
+    section.mission-bar
+      div.mission-title
+        span.section-kicker NEXT 7 DAYS
+        h2 Upcoming encounters
+      div.mission-controls
+        label.control-label Units
+          select#units-select(aria-label='Measurement units')
+            option(value='imperial') Imperial
+            option(value='metric') Metric
+        label.control-label Time zone
+          select#timezone-select(aria-label='Display time zone')
+            option(value='UTC') UTC
+            option(value='local') Local
+            option(value='America/Los_Angeles') Pacific
+            option(value='America/Denver') Mountain
+            option(value='America/Chicago') Central
+            option(value='America/New_York') Eastern
+            option(value='Europe/London') London
+            option(value='Asia/Tokyo') Tokyo
+      div.legend
+        span.legend-item <i class='legend-dot earth-dot'></i> EARTH
+        span.legend-item <i class='legend-dot moon-dot'></i> MOON ORBIT
+        span.legend-item <i class='legend-dot object-dot'></i> OBJECT
+    if error
+      section.notice(role='status')
+        span.notice-icon !
+        div
+          strong Feed offline
+          p= error
+    else
+      script#neo-data(type='application/json')!= JSON.stringify(data).replace(/</g, '\\u003c')
+      section#summary.summary(aria-live='polite')
+      section#encounters.encounters(aria-live='polite')
+      noscript This mission console requires JavaScript to render encounter data.
+    footer.footer
+      span DATA: NASA/JPL NEOWS
+      a(href='https://api.nasa.gov/api.html#NeoWS' target='_blank' rel='noopener') ABOUT THE FEED ↗
+      span DISTANCES ARE APPROXIMATE
