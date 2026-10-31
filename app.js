@@ -2,7 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-var dotenv = require('dotenv').config();
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 
