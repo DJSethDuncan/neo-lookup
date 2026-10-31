@@ -1,4 +1,4 @@
-![screenshot](https://user-images.githubusercontent.com/4060878/217894252-79ceac45-08ba-4366-9164-8fee0962f552.png)
+<img width="1140" height="812" alt="image" src="https://github.com/user-attachments/assets/d0e2af3c-0f6b-45bc-93cb-8220e48f0e3e" />
 
 # neo-lookup
 
