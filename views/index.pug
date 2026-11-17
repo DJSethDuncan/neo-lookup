@@ -41,6 +41,18 @@ block content
             option(value='America/New_York') Eastern
             option(value='Europe/London') London
             option(value='Asia/Tokyo') Tokyo
+        label.control-label Max distance
+          select#distance-select(aria-label='Maximum miss distance')
+            option(value='') Any
+            option(value='1') Within 1 lunar distance
+            option(value='5') Within 5 lunar distances
+            option(value='10') Within 10 lunar distances
+            option(value='20') Within 20 lunar distances
+        label.control-label Hazard
+          select#hazard-select(aria-label='Hazard status')
+            option(value='all') All objects
+            option(value='hazardous') Hazardous only
+            option(value='safe') Non-hazardous only
       div.legend
         span.legend-item <i class='legend-dot earth-dot'></i> EARTH
         span.legend-item <i class='legend-dot moon-dot'></i> MOON ORBIT
