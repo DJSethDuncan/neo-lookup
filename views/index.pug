@@ -27,6 +27,10 @@ block content
         span.section-kicker NEXT 7 DAYS
         h2 Upcoming encounters
       div.mission-controls
+        label.control-label View
+          select#view-select(aria-label='Distance view')
+            option(value='standard') Standard
+            option(value='moon') Moon mode
         label.control-label Units
           select#units-select(aria-label='Measurement units')
             option(value='imperial') Imperial
